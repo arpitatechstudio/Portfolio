@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arpita Tech Studio — Digital Products & Websites</title>
+<style>
+:root {
+  --site-primary: #C8F169;
+  --site-on-primary: #17200D;
+  --site-secondary: #20261E;
+  --site-on-secondary: #F5F7F1;
+  --site-background: #F5F7F1;
+  --site-on-background: #1D241B;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --ink: #1D241B;
+  --muted: #687064;
+  --line: #E1E6DA;
+  --surface: #FFFFFF;
+  --soft: #EDF2E7;
+  --lime: #C8F169;
+  --dark: #20261E;
+  --green: #3E6B3B;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--site-font-body); color: var(--ink); background: var(--site-background); }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.app-root { min-height: 100vh; width: 100%; border-radius: 0; background-color: var(--site-background); color: var(--site-on-background); overflow: hidden; }
+.container { width: min(1140px, calc(100% - 48px)); margin: 0 auto; }
+.topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); }
+.brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; font-weight: 800; letter-spacing: -0.04em; font-size: 19px; }
+.brand-mark { display: grid; place-items: center; width: 34px; height: 34px; background: var(--site-primary); color: var(--site-on-primary); border-radius: 11px; font-size: 19px; font-weight: 900; }
+.brand small { display: block; color: var(--muted); font-weight: 550; letter-spacing: 0; font-size: 10px; margin-top: 1px; }
+.nav { display: flex; align-items: center; gap: 27px; }
+.nav a { color: #4F584A; font-size: 13px; text-decoration: none; font-weight: 650; }
+.nav a:hover { color: var(--green); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 0 18px; border-radius: calc(13px * var(--site-radius-scale)); border: 1px solid transparent; cursor: pointer; text-decoration: none; font-size: 13px; font-weight: 800; transition: transform .18s ease, background .18s ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--site-primary); color: var(--site-on-primary); }
+.btn-primary:hover { background: #B9E75A; }
+.btn-dark { background: var(--site-secondary); color: var(--site-on-secondary); }
+.btn-outline { background: transparent; border-color: #CBD3C4; color: var(--ink); }
+.menu-toggle { display: none; border: 1px solid var(--line); background: white; padding: 9px 12px; border-radius: 10px; cursor: pointer; }
+.hero { display: grid; grid-template-columns: 1.02fr .98fr; gap: 48px; align-items: center; padding: 76px 0 83px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #EAF4D8; color: #42622E; border: 1px solid #DCEBBF; border-radius: 99px; padding: 8px 12px; font-size: 11px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #5E923D; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { font-family: var(--site-font-heading); font-size: clamp(calc(42px * var(--site-heading-scale)), 5vw, calc(68px * var(--site-heading-scale))); line-height: .99; letter-spacing: -.065em; margin: 23px 0 21px; max-width: 610px; }
+.highlight { position: relative; display: inline; z-index: 0; }
+.highlight:after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 14px; background: var(--site-primary); opacity: .76; z-index: -1; transform: rotate(-1.5deg); }
+.hero-copy { color: var(--muted); font-size: 16px; line-height: 1.8; max-width: 510px; margin-bottom: 27px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
+.microproof { display: flex; align-items: center; gap: 12px; margin-top: 25px; color: #6E7768; font-size: 11px; font-weight: 650; }
+.avatar-stack { display: flex; }
+.avatar-stack span { width: 25px; height: 25px; border: 2px solid var(--site-background); border-radius: 50%; background: #D9E9B7; margin-left: -6px; display: grid; place-items: center; color: #355128; font-size: 9px; font-weight: 900; }
+.avatar-stack span:first-child { margin-left: 0; background: #D5DFD1; }
+.dashboard-wrap { position: relative; padding: 0 0 0 8px; }
+.dashboard-wrap:before { content: ""; position: absolute; width: 78%; height: 85%; right: -20px; top: 10%; background: var(--site-primary); border-radius: 34px; transform: rotate(4deg); opacity: var(--site-decoration-opacity); }
+.dashboard { position: relative; background: white; border: 1px solid #E2E8DB; border-radius: 22px; padding: 18px; box-shadow: 0 24px 70px #1e2b1420; }
+.dash-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+.dash-title { font-size: 14px; font-weight: 850; letter-spacing: -.03em; }
+.dash-sub { font-size: 10px; color: #899183; margin-top: 4px; }
+.dash-badge { font-size: 10px; font-weight: 800; background: #EDF7DD; color: #47742D; padding: 7px 9px; border-radius: 8px; }
+.metric-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
+.metric { border: 1px solid #E9EDE5; border-radius: 13px; padding: 13px 11px; }
+.metric label { display: block; font-size: 9px; color: #7C8576; font-weight: 700; }
+.metric strong { display: block; font-size: 23px; letter-spacing: -.06em; margin: 8px 0 5px; }
+.metric small { font-size: 9px; color: #5D8A42; font-weight: 750; }
+.chart-card { border: 1px solid #E9EDE5; border-radius: 14px; margin-top: 10px; padding: 14px; }
+.chart-top { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 800; margin-bottom: 13px; }
+.chart-top span { color: #8A9285; font-weight: 650; }
+.bars { height: 85px; display: flex; align-items: end; gap: 9px; border-bottom: 1px solid #E8ECE4; background: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #F0F3EC 28px); padding: 0 5px; }
+.bar { flex: 1; background: #DCE8D1; border-radius: 5px 5px 0 0; min-width: 9px; }
+.bar:nth-child(2n) { background: #C7ED7A; }
+.bar:nth-child(4) { background: #79A65B; }
+.chart-labels { display: flex; justify-content: space-between; margin-top: 7px; font-size: 8px; color: #9AA193; }
+.leads-card { border: 1px solid #E9EDE5; border-radius: 14px; margin-top: 10px; padding: 12px; }
+.leads-title { font-size: 10px; font-weight: 850; margin-bottom: 9px; }
+.lead-row { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; padding: 9px 0; border-top: 1px solid #F0F2ED; font-size: 9px; }
+.lead-name { font-weight: 800; }
+.lead-company { display: block; color: #8B9386; margin-top: 3px; font-size: 8px; }
+.pill { border-radius: 99px; background: #F0F4EB; color: #607252; padding: 5px 7px; font-weight: 800; font-size: 8px; }
+.pill.green { background: #E9F5D8; color: #4C762C; }
+.floating-note { position: absolute; left: -20px; bottom: 24px; background: var(--site-secondary); color: white; border-radius: 13px; padding: 12px 15px; box-shadow: 0 12px 28px #1e2b1420; font-size: 10px; z-index: 2; }
+.floating-note strong { display: block; font-size: 12px; margin-bottom: 4px; }
+.trust-strip { background: var(--site-secondary); color: white; padding: 24px 0; }
+.trust-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.trust-label { color: #B7C0B1; font-size: 11px; max-width: 170px; line-height: 1.5; }
+.trust-item { font-size: 13px; font-weight: 800; letter-spacing: -.02em; color: #E7EDE2; }
+.trust-item span { color: var(--site-primary); margin-right: 7px; }
+.section { padding: 88px 0; }
+.section-head { max-width: 660px; margin-bottom: 35px; }
+.kicker { color: #54763A; font-size: 11px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 13px; }
+h2 { font-size: clamp(calc(32px * var(--site-heading-scale)), 4vw, calc(46px * var(--site-heading-scale))); letter-spacing: -.055em; line-height: 1.07; margin-bottom: 15px; }
+.section-head p { color: var(--muted); line-height: 1.75; font-size: 14px; max-width: 560px; margin-bottom: 0; }
+.feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.feature { background: white; border: 1px solid var(--line); border-radius: calc(18px * var(--site-radius-scale)); padding: 24px; min-height: 205px; }
+.feature-icon { width: 42px; height: 42px; display: grid; place-items: center; background: #EDF5E2; border-radius: 13px; font-size: 20px; margin-bottom: 22px; }
+.feature h3 { font-size: 16px; letter-spacing: -.03em; margin-bottom: 9px; }
+.feature p { font-size: 12px; color: var(--muted); line-height: 1.75; margin-bottom: 0; }
+.workflow { background: #EAF0E3; }
+.workflow-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 65px; align-items: start; }
+.steps { display: grid; gap: 10px; }
+.step { background: #F8FAF5; border: 1px solid #DDE6D5; border-radius: 15px; padding: 17px; display: grid; grid-template-columns: 37px 1fr; gap: 13px; }
+.step-num { width: 35px; height: 35px; border-radius: 11px; background: var(--site-primary); display: grid; place-items: center; font-size: 12px; font-weight: 900; }
+.step h3 { font-size: 14px; margin-bottom: 5px; }
+.step p { font-size: 12px; line-height: 1.65; color: var(--muted); margin: 0; }
+.price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: stretch; }
+.price-card { border: 1px solid var(--line); border-radius: 18px; background: white; padding: 24px; display: flex; flex-direction: column; }
+.price-card.featured { background: var(--site-secondary); color: white; border-color: var(--site-secondary); box-shadow: 0 18px 45px #17200d20; }
+.price-tag { font-size: 11px; font-weight: 850; color: #65715D; }
+.featured .price-tag { color: var(--site-primary); }
+.price { font-size: 35px; font-weight: 900; letter-spacing: -.06em; margin: 17px 0 6px; }
+.price small { font-size: 12px; font-weight: 600; letter-spacing: 0; color: #8A9385; }
+.price-desc { font-size: 12px; color: var(--muted); line-height: 1.7; min-height: 42px; }
+.featured .price-desc { color: #C4CDC0; }
+.price-card ul { list-style: none; padding: 0; margin: 18px 0 23px; display: grid; gap: 12px; flex: 1; }
+.price-card li { font-size: 12px; color: #596353; display: flex; gap: 8px; line-height: 1.45; }
+.featured li { color: #E5EBDD; }
+.price-card li:before { content: "✓"; color: #5B873A; font-weight: 900; }
+.featured li:before { color: var(--site-primary); }
+.price-card .btn { width: 100%; }
+.pricing-note { color: #7B8574; font-size: 11px; line-height: 1.7; margin-top: 18px; }
+.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 65px; }
+.faq-list { display: grid; gap: 9px; }
+details { border: 1px solid var(--line); border-radius: 13px; padding: 16px 18px; background: white; }
+summary { cursor: pointer; font-size: 13px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary:after { content: "+"; font-size: 19px; line-height: 13px; color: #638743; }
+details[open] summary:after { content: "−"; }
+details p { color: var(--muted); font-size: 12px; line-height: 1.75; margin: 13px 0 0; }
+.cta { background: var(--site-secondary); color: white; border-radius: 25px; padding: 47px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 25px; position: relative; overflow: hidden; }
+.cta:after { content: ""; position: absolute; width: 260px; height: 260px; right: 14%; top: -150px; border-radius: 50%; border: 1px solid #FFFFFF18; box-shadow: 0 0 0 35px #FFFFFF08, 0 0 0 70px #FFFFFF05; pointer-events: none; }
+.cta h2 { font-size: 34px; margin-bottom: 11px; max-width: 600px; }
+.cta p { color: #B8C2B2; font-size: 13px; margin: 0; line-height: 1.7; }
+.cta .btn { position: relative; z-index: 1; white-space: nowrap; }
+.footer { padding: 30px 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; color: #778071; font-size: 11px; }
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer a { color: #586351; text-decoration: none; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 20; background: #10170FC9; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-backdrop.open { display: flex; }
+.modal { width: min(500px, 100%); max-height: 90vh; overflow: auto; background: white; color: var(--ink); border-radius: 20px; padding: 28px; box-shadow: 0 30px 90px #0005; }
+.modal-top { display: flex; justify-content: space-between; align-items: start; gap: 15px; }
+.modal h2 { font-size: 28px; margin: 0 0 9px; }
+.modal-intro { color: var(--muted); font-size: 12px; line-height: 1.7; margin-bottom: 20px; }
+.close-modal { border: 1px solid var(--line); background: #F7F9F4; border-radius: 9px; width: 33px; height: 33px; cursor: pointer; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.field { display: grid; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 11px; font-weight: 800; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid #DCE3D5; border-radius: 10px; padding: 11px 12px; outline: none; color: var(--ink); background: #FBFCF9; font-size: 12px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: #8CAF5B; box-shadow: 0 0 0 3px #C8F16940; }
+.field textarea { min-height: 85px; resize: vertical; }
+.form-submit { width: 100%; margin-top: 16px; }
+.contact-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+.contact-note { color: #657087; font-size: 11px; line-height: 1.65; margin: 12px 0 0; }
+.btn-whatsapp { background: #E8F8EE; color: #176B3A; border: 1px solid #BDE8CC; }
+.form-message { display: none; padding: 13px; background: #EDF7E2; color: #365D25; border-radius: 10px; font-size: 12px; line-height: 1.65; margin-top: 14px; }
+.form-message.show { display: block; }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 45px; padding-top: 55px; }
+  .hero-copy { max-width: 650px; }
+  .dashboard-wrap { max-width: 600px; margin: 0 auto; width: 100%; }
+  .workflow-grid, .faq-grid { grid-template-columns: 1fr; gap: 28px; }
+  .trust-inner { flex-wrap: wrap; justify-content: center; }
+  .trust-label { max-width: none; width: 100%; text-align: center; }
+  .cta { grid-template-columns: 1fr; }
+  .cta .btn { justify-self: start; }
+}
+@media (max-width: 680px) {
+  .container { width: min(100% - 32px, 1140px); }
+  .topbar { height: 68px; }
+  .menu-toggle { display: block; }
+  .nav { display: none; position: absolute; z-index: 10; top: 67px; left: 0; right: 0; padding: 18px 22px; background: white; border-bottom: 1px solid var(--line); align-items: stretch; flex-direction: column; gap: 18px; }
+  .nav.open { display: flex; }
+  .nav .btn { width: 100%; }
+  .hero { padding: 43px 0 58px; }
+  h1 { font-size: clamp(41px, 12vw, 57px); }
+  .hero-copy { font-size: 14px; }
+  .dashboard { padding: 12px; border-radius: 17px; }
+  .metric-grid { gap: 6px; }
+  .metric { padding: 10px 8px; }
+  .metric strong { font-size: 19px; }
+  .floating-note { left: -5px; bottom: -16px; }
+  .section { padding: 63px 0; }
+  .feature-grid, .price-grid { grid-template-columns: 1fr; }
+  .feature { min-height: 0; }
+  .trust-item { font-size: 11px; }
+  .cta { padding: 29px 23px; }
+  .cta h2 { font-size: 29px; }
+  .footer-inner { align-items: start; flex-direction: column; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+}
+@media (prefers-color-scheme: dark) {
+  body { background: var(--site-background); }
+}
+/* Previous art direction retained below; current direction is applied at the end. */
+:root {
+  --site-primary: #F05A36;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #182B3A;
+  --site-on-secondary: #F7F2E9;
+  --site-background: #F7F2E9;
+  --site-on-background: #182B3A;
+  --ink: #182B3A;
+  --muted: #63717A;
+  --line: #D9D8D0;
+  --surface: #FFFDF8;
+  --soft: #E8E7DF;
+  --lime: #F05A36;
+  --dark: #182B3A;
+  --green: #F05A36;
+}
+body { background: var(--site-background); }
+.app-root { background-color: var(--site-background); }
+.container { width: min(1240px, calc(100% - 72px)); }
+.topbar { height: 88px; border-bottom: 1px solid #C9C9C0; }
+.brand { font-size: 17px; letter-spacing: -.045em; }
+.brand-mark { width: 39px; height: 39px; border-radius: 50%; background: var(--site-secondary); color: var(--site-on-secondary); font-family: Georgia, serif; font-style: italic; }
+.brand small { text-transform: uppercase; letter-spacing: .12em; font-size: 8px; margin-top: 4px; }
+.nav { gap: 30px; }
+.nav a { color: var(--ink); font-size: 12px; }
+.btn { border-radius: 2px; min-height: 47px; padding: 0 20px; text-transform: uppercase; letter-spacing: .065em; font-size: 10px; }
+.btn-primary { background: var(--site-primary); color: white; }
+.btn-primary:hover { background: #D94726; }
+.btn-outline { border-color: var(--ink); }
+.btn-dark { background: var(--site-secondary); }
+.hero { grid-template-columns: 1.12fr .88fr; gap: 5.5vw; padding: 88px 0 96px; align-items: stretch; }
+.eyebrow { background: transparent; color: var(--site-primary); border: 0; border-radius: 0; padding: 0; font-size: 10px; letter-spacing: .16em; }
+.dot { background: var(--site-primary); }
+h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; font-size: clamp(calc(56px * var(--site-heading-scale)), 6.2vw, calc(91px * var(--site-heading-scale))); line-height: .96; letter-spacing: -.065em; margin: 30px 0 25px; max-width: 720px; }
+.highlight { color: var(--site-primary); }
+.highlight:after { display: none; }
+.hero-copy { font-size: 15px; line-height: 1.9; max-width: 480px; color: #596973; }
+.microproof { border-top: 1px solid var(--line); padding-top: 17px; margin-top: 32px; color: var(--muted); font-size: 10px; letter-spacing: .03em; }
+.avatar-stack { display: none; }
+.dashboard-wrap { min-height: 510px; padding: 0; display: flex; align-items: center; }
+.dashboard-wrap:before { width: 72%; height: 79%; right: 2%; top: 8%; background: #E5D9C7; border-radius: 0; transform: rotate(5deg); }
+.dashboard { width: 100%; min-height: 410px; background: var(--site-secondary); color: var(--site-on-secondary); border: 0; border-radius: 0; padding: 28px; box-shadow: 16px 16px 0 var(--site-primary); transform: rotate(-2deg); }
+.dash-head { border-bottom: 1px solid #FFFFFF30; padding-bottom: 20px; margin-bottom: 28px; }
+.dash-title { font-family: Georgia, serif; font-size: 27px; font-weight: 400; letter-spacing: -.04em; }
+.dash-sub { color: #C8D0D2; font-size: 11px; line-height: 1.6; max-width: 250px; }
+.dash-badge { background: transparent; color: #F7B7A7; border: 1px solid #F7B7A7; border-radius: 0; font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.metric-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+.metric { border: 1px solid #FFFFFF30; border-radius: 0; padding: 18px; min-height: 125px; }
+.metric label { color: #CBD3D5; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+.metric strong { color: var(--site-primary); font-family: Georgia, serif; font-weight: 400; font-size: 30px; }
+.metric small { color: #D8DEDC; font-size: 9px; }
+.chart-card, .leads-card { display: none; }
+.floating-note { position: relative; left: auto; bottom: auto; margin-left: -85px; margin-top: 300px; flex: 0 0 170px; background: var(--site-background); color: var(--ink); border: 1px solid var(--line); border-radius: 0; box-shadow: none; font-size: 9px; }
+.floating-note strong { color: var(--site-primary); font-family: Georgia, serif; font-size: 17px; font-weight: 500; }
+.trust-strip { background: var(--site-secondary); padding: 25px 0; }
+.trust-label { color: #C8D0D2; }
+.trust-item { color: #F7F2E9; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; }
+.trust-item span { color: var(--site-primary); }
+.section { padding: 105px 0; }
+.kicker { color: var(--site-primary); letter-spacing: .17em; font-size: 10px; }
+h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(calc(38px * var(--site-heading-scale)), 4.6vw, calc(60px * var(--site-heading-scale))); letter-spacing: -.05em; line-height: 1.02; }
+.section-head { max-width: 760px; margin-bottom: 45px; }
+.section-head p { font-size: 14px; }
+.feature-grid { grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.feature { background: transparent; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; padding: 28px; min-height: 235px; }
+.feature-icon { background: transparent; border: 1px solid var(--site-primary); color: var(--site-primary); border-radius: 50%; width: 42px; height: 42px; font-family: Georgia, serif; margin-bottom: 35px; }
+.feature h3 { font-family: Georgia, serif; font-weight: 500; font-size: 21px; }
+.feature p { font-size: 12px; }
+.workflow { background: #E8E4DA; }
+.workflow-grid { grid-template-columns: .9fr 1.1fr; gap: 9vw; }
+.step { background: transparent; border: 0; border-top: 1px solid #C7C6BC; border-radius: 0; padding: 22px 0; grid-template-columns: 45px 1fr; }
+.step-num { background: transparent; color: var(--site-primary); border-radius: 0; font-family: Georgia, serif; font-size: 18px; }
+.step h3 { font-family: Georgia, serif; font-weight: 500; font-size: 19px; }
+.price-grid { gap: 16px; }
+.price-card { background: transparent; border: 1px solid var(--line); border-radius: 0; padding: 28px; }
+.price-card.featured { background: var(--site-secondary); border-color: var(--site-secondary); box-shadow: none; }
+.price-tag { color: var(--site-primary); letter-spacing: .12em; }
+.price { font-family: Georgia, serif; font-weight: 400; font-size: 32px; letter-spacing: -.04em; }
+.price-card li { font-size: 12px; }
+.price-card li:before { color: var(--site-primary); }
+.featured li:before { color: var(--site-primary); }
+.pricing-note { max-width: 760px; }
+.faq-grid { gap: 9vw; }
+details { background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 19px 0; }
+summary { font-family: Georgia, serif; font-size: 17px; font-weight: 500; }
+summary:after { color: var(--site-primary); }
+.cta { background: var(--site-primary); color: white; border-radius: 0; padding: 55px; }
+.cta .kicker { color: white !important; }
+.cta h2 { font-family: Georgia, serif; font-weight: 400; }
+.cta p { color: #FFF0EB; }
+.cta .btn-primary { background: var(--site-secondary); color: white; }
+.footer { border-top: 1px solid var(--line); }
+.footer a { color: var(--ink); }
+.modal { border-radius: 0; }
+@media (max-width: 900px) {
+  .container { width: min(100% - 40px, 1240px); }
+  .hero { grid-template-columns: 1fr; gap: 35px; padding: 65px 0 75px; }
+  .dashboard-wrap { max-width: 590px; margin: 0 auto; }
+  .workflow-grid, .faq-grid { gap: 30px; }
+}
+@media (max-width: 680px) {
+  .container { width: calc(100% - 32px); }
+  .topbar { height: 72px; }
+  .nav { top: 71px; background: var(--site-background); }
+  h1 { font-size: clamp(48px, 13vw, 68px); }
+  .dashboard-wrap { min-height: 410px; }
+  .dashboard { padding: 19px; min-height: 350px; }
+  .dash-title { font-size: 22px; }
+  .metric { padding: 12px; min-height: 105px; }
+  .floating-note { margin-left: -38px; margin-top: 255px; flex-basis: 145px; padding: 10px; }
+  .feature-grid, .price-grid { grid-template-columns: 1fr; }
+  .feature { min-height: 0; padding: 23px; }
+  .section { padding: 72px 0; }
+  .cta { padding: 30px 23px; }
+}
+/* Current direction: confident, contemporary international digital studio. */
+:root {
+  --site-primary: #4169F5;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #101A2C;
+  --site-on-secondary: #FFFFFF;
+  --site-background: #F7F8FC;
+  --site-on-background: #101A2C;
+  --ink: #101A2C;
+  --muted: #657087;
+  --line: #E1E6F0;
+  --surface: #FFFFFF;
+  --soft: #EDF1FF;
+  --lime: #4169F5;
+  --dark: #101A2C;
+  --green: #4169F5;
+}
+body, .app-root { background: var(--site-background); color: var(--ink); }
+.container { width: min(1200px, calc(100% - 64px)); }
+.topbar { height: 82px; border-bottom-color: var(--line); }
+.brand { font-size: 17px; letter-spacing: -.045em; }
+.brand-mark { background: var(--site-primary); color: #fff; border-radius: 11px; font-family: inherit; font-style: normal; }
+.brand small { letter-spacing: .04em; font-size: 9px; color: #78839A; text-transform: none; }
+.nav { gap: 26px; }
+.nav a { color: #45516A; font-size: 12px; }
+.btn { border-radius: 9px; min-height: 46px; padding: 0 19px; text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 750; }
+.btn-primary { background: var(--site-primary); box-shadow: 0 7px 18px #4169F52B; }
+.btn-primary:hover { background: #3156DF; }
+.btn-outline { border-color: #D4DCEC; background: #fff; }
+.hero { grid-template-columns: 1.02fr .98fr; gap: 6vw; align-items: center; padding: 78px 0 82px; }
+.eyebrow { background: #E9EEFF; color: #3557D4; border: 1px solid #D8E1FF; border-radius: 99px; padding: 8px 12px; letter-spacing: .07em; }
+.dot { background: var(--site-primary); }
+h1 { font-family: var(--site-font-body); font-size: clamp(48px, 5.2vw, 72px); line-height: 1.02; letter-spacing: -.065em; font-weight: 780; margin: 24px 0 22px; max-width: 700px; }
+.highlight { color: var(--site-primary); }
+.hero-copy { color: #5E6A80; font-size: 15px; line-height: 1.85; max-width: 500px; }
+.microproof { border-top: 1px solid var(--line); padding-top: 17px; margin-top: 28px; color: #69758B; font-size: 10px; }
+.dashboard-wrap { min-height: 450px; padding: 0 8px 0 0; display: flex; align-items: center; }
+.dashboard-wrap:before { width: 76%; height: 80%; right: -4px; top: 9%; background: #DCE5FF; border-radius: 28px; transform: rotate(4deg); }
+.dashboard { width: 100%; min-height: 390px; background: #fff; color: var(--ink); border: 1px solid #E3E8F3; border-radius: 20px; padding: 25px; box-shadow: 0 28px 70px #17274B17; transform: none; }
+.dash-head { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 20px; }
+.dash-title { font-family: var(--site-font-body); font-size: 19px; font-weight: 750; letter-spacing: -.04em; }
+.dash-sub { color: #7A859A; font-size: 10px; line-height: 1.6; max-width: 260px; }
+.dash-badge { background: #EDF1FF; color: #3557D4; border: 0; border-radius: 7px; font-size: 9px; letter-spacing: .02em; text-transform: none; }
+.metric-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+.metric { background: #FAFBFF; border: 1px solid #E7EBF5; border-radius: 13px; padding: 17px; min-height: 112px; }
+.metric label { color: #748099; font-size: 9px; letter-spacing: .07em; }
+.metric strong { color: #182A4B; font-family: var(--site-font-body); font-weight: 750; font-size: 25px; letter-spacing: -.045em; }
+.metric small { color: #64718A; font-size: 9px; line-height: 1.5; }
+.floating-note { position: absolute; left: -27px; bottom: 22px; margin: 0; flex: none; background: #101A2C; color: white; border: 0; border-radius: 12px; box-shadow: 0 14px 30px #101A2C24; font-size: 9px; padding: 13px 16px; }
+.floating-note strong { color: #AFC0FF; font-family: var(--site-font-body); font-size: 12px; font-weight: 700; }
+.trust-strip { background: #101A2C; padding: 23px 0; }
+.trust-label { color: #B9C3D7; }
+.trust-item { color: #F4F6FC; font-size: 10px; letter-spacing: .04em; text-transform: none; }
+.trust-item span { color: #91A7FF; }
+.section { padding: 92px 0; }
+.kicker { color: #4169F5; letter-spacing: .12em; font-size: 10px; }
+h2 { font-family: var(--site-font-body); font-weight: 740; font-size: clamp(34px, 4vw, 52px); letter-spacing: -.055em; line-height: 1.08; }
+.section-head { max-width: 740px; margin-bottom: 38px; }
+.section-head p { font-size: 14px; color: #657087; }
+.feature-grid { gap: 14px; border: 0; }
+.feature { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; min-height: 218px; box-shadow: 0 5px 18px #1C2B4B05; }
+.feature-icon { background: #EDF1FF; border: 0; color: #4169F5; border-radius: 12px; font-family: var(--site-font-body); margin-bottom: 25px; }
+.feature h3 { font-family: var(--site-font-body); font-weight: 750; font-size: 16px; }
+.feature p { color: #68748A; font-size: 12px; }
+.workflow { background: #EEF2FA; }
+.workflow-grid { grid-template-columns: .9fr 1.1fr; gap: 7vw; }
+.step { background: #fff; border: 1px solid #E1E7F1; border-radius: 13px; padding: 18px; grid-template-columns: 38px 1fr; gap: 14px; }
+.step-num { background: #EAF0FF; color: #4169F5; border-radius: 10px; font-family: var(--site-font-body); font-size: 12px; font-weight: 800; }
+.step h3 { font-family: var(--site-font-body); font-size: 14px; font-weight: 750; }
+.step p { color: #68748A; }
+.price-grid { gap: 16px; }
+.price-card { background: #fff; border: 1px solid var(--line); border-radius: 17px; padding: 25px; }
+.price-card.featured { background: #101A2C; border-color: #101A2C; box-shadow: 0 18px 36px #101A2C17; }
+.price-tag { color: #4169F5; letter-spacing: .08em; }
+.price { font-family: var(--site-font-body); font-weight: 760; font-size: 29px; letter-spacing: -.05em; }
+.price-card li { color: #58657B; }
+.featured li { color: #E0E6F2; }
+.price-card li:before { color: #4169F5; }
+.featured li:before { color: #91A7FF; }
+details { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 17px 18px; }
+summary { font-family: var(--site-font-body); font-size: 13px; font-weight: 700; }
+summary:after { color: #4169F5; }
+.cta { background: #101A2C; color: #fff; border-radius: 20px; padding: 48px; }
+.cta:after { border-color: #FFFFFF12; }
+.cta h2 { font-family: var(--site-font-body); font-weight: 740; font-size: 35px; }
+.cta p { color: #C0C9DA; }
+.cta .kicker { color: #91A7FF !important; }
+.cta .btn-primary { background: #4169F5; }
+.footer { border-top: 1px solid var(--line); }
+.footer a { color: #45516A; }
+.modal { border-radius: 18px; }
+@media (max-width: 900px) {
+  .container { width: min(100% - 40px, 1200px); }
+  .hero { grid-template-columns: 1fr; gap: 35px; padding: 60px 0 70px; }
+  .dashboard-wrap { max-width: 590px; margin: 0 auto; width: 100%; }
+}
+@media (max-width: 680px) {
+  .container { width: calc(100% - 32px); }
+  .topbar { height: 72px; }
+  .nav { top: 71px; background: #fff; }
+  h1 { font-size: clamp(43px, 11.8vw, 60px); }
+  .dashboard-wrap { min-height: 400px; }
+  .dashboard { padding: 17px; min-height: 340px; }
+  .dash-title { font-size: 18px; }
+  .metric { padding: 12px; min-height: 100px; }
+  .floating-note { left: -5px; bottom: 2px; margin: 0; padding: 11px; }
+  .feature-grid, .price-grid { grid-template-columns: 1fr; }
+  .feature { min-height: 0; }
+  .section { padding: 68px 0; }
+  .cta { padding: 29px 22px; }
+  .cta h2 { font-size: 29px; }
+}
+/* Brand direction: Midnight / Cobalt / Porcelain — calm, precise, trustworthy. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding: 88px max(32px, calc((100vw - 1200px) / 2)) 92px;
+  color: #F7F8FC;
+  background-color: #101A2C;
+  background-image: linear-gradient(#FFFFFF08 1px, transparent 1px), linear-gradient(90deg, #FFFFFF08 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.hero:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 420px;
+  height: 420px;
+  right: 4%;
+  top: 8%;
+  border: 1px solid #4169F54D;
+  border-radius: 50%;
+  box-shadow: 0 0 0 42px #4169F51A, 0 0 0 84px #4169F50D;
+  pointer-events: none;
+}
+.hero .eyebrow { background: #FFFFFF0A; border-color: #FFFFFF24; color: #C5D0FF; }
+.hero .dot { background: #7892FF; box-shadow: 0 0 0 4px #4169F52B; }
+.hero h1 { color: #FFFFFF; max-width: 660px; }
+.hero .highlight { color: #91A7FF; }
+.hero-copy { color: #C1CADB; }
+.hero .microproof { color: #AEBBD1; border-top-color: #FFFFFF24; }
+.hero .btn-outline { background: transparent; border-color: #FFFFFF50; color: #FFFFFF; }
+.hero .btn-outline:hover { background: #FFFFFF0D; }
+.dashboard-wrap:before { background: #4169F5; opacity: .75; }
+.dashboard { border-color: #FFFFFF22; box-shadow: 0 28px 80px #00000038; }
+.floating-note { background: #4169F5; box-shadow: 0 16px 36px #00000035; }
+.floating-note strong { color: #FFFFFF; }
+.trust-strip { background: #F7F8FC; color: #101A2C; border-bottom: 1px solid #E1E6F0; }
+.trust-label { color: #657087; }
+.trust-item { color: #101A2C; }
+.trust-item span { color: #4169F5; }
+.workflow { background: #EEF2FA; }
+.cta { background: #101A2C; }
+@media (max-width: 900px) {
+  .hero { width: 100%; padding: 64px 32px 76px; }
+  .hero:after { width: 300px; height: 300px; right: 2%; top: 30%; }
+}
+@media (max-width: 680px) {
+  .hero { padding: 48px 16px 62px; }
+  .hero:after { width: 220px; height: 220px; right: -30px; top: 48%; }
+}
+
+/* Premium mockup gallery */
+.mockup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 36px;
+}
+
+.mockup-card {
+  min-width: 0;
+  padding: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e7eaf2;
+  border-radius: 22px;
+  box-shadow: 0 12px 36px rgba(16, 26, 44, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mockup-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 50px rgba(16, 26, 44, 0.13);
+}
+
+.browser-frame {
+  overflow: hidden;
+  background: #f4f6fb;
+  border: 1px solid #e3e7f0;
+  border-radius: 13px;
+}
+
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 42px;
+  padding: 0 13px;
+  background: #fbfcff;
+  border-bottom: 1px solid #e7eaf2;
+}
+
+.browser-dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 5px;
+}
+
+.browser-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c7cddd;
+}
+
+.browser-dots span:first-child {
+  background: #ff6b6b;
+}
+
+.browser-dots span:nth-child(2) {
+  background: #f7c65b;
+}
+
+.browser-dots span:nth-child(3) {
+  background: #42c98b;
+}
+
+.browser-address {
+  flex: 1;
+  overflow: hidden;
+  padding: 6px 12px;
+  color: #778198;
+  background: #f0f2f8;
+  border-radius: 7px;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.browser-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.mockup-card:hover .browser-frame img {
+  transform: scale(1.025);
+}
+
+.mockup-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 5px 7px;
+}
+
+.mockup-info h3 {
+  margin: 0;
+  color: #101a2c;
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.mockup-info p {
+  margin: 7px 0 0;
+  color: #758096;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mockup-info > span {
+  color: #4169f5;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+  .mockup-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .mockup-card {
+    padding: 10px;
+    border-radius: 17px;
+  }
+
+  .mockup-info h3 {
+    font-size: 16px;
+  }
+}
+
+/* Compact, premium project gallery */
+.mockup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.mockup-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.browser-frame {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #e3e7f0;
+  background: #fff;
+}
+
+.browser-bar {
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f6fa;
+}
+
+.browser-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.browser-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.browser-address {
+  font-size: 9px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.browser-frame img {
+  display: block;
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.mockup-info {
+  padding: 12px 2px;
+}
+
+.mockup-info h3 {
+  font-size: 15px;
+  margin: 0 0 5px;
+}
+
+.mockup-info p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  color: #687386;
+}
+
+@media (max-width: 760px) {
+  .mockup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .browser-frame img {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mockup-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .browser-frame img {
+    height: 190px;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="app-root" data-sites-preview-theme="custom">
+  <header class="container topbar">
+    <a class="brand" href="#home" aria-label="Arpita Tech Studio home"><span class="brand-mark">A.</span><span>Arpita Tech Studio<small>Websites · Software · Digital solutions</small></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="nav" id="mainNav" aria-label="Main navigation">
+      <a href="#features">Services</a><a href="#how-it-works">Our process</a><a href="#pricing">Selected concepts</a><a href="#faq">FAQs</a>
+      <button class="btn btn-primary" data-open-demo>Discuss a project <span>↗</span></button>
+    </nav>
+  </header>
+  <main>
+    <section class="container hero" id="home">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Independent technology & digital studio</div>
+        <h1>Technology that moves <span class="highlight">business forward.</span></h1>
+        <p class="hero-copy">Thoughtful websites, digital products and practical software for businesses ready to work smarter. Clear scope, considered design and careful delivery — from the first conversation to handover.</p>
+        <div class="hero-actions"><button class="btn btn-primary" data-open-demo>Discuss your project <span>↗</span></button><a class="btn btn-outline" href="#pricing">Explore concept work <span>↓</span></a></div>
+        <div class="microproof"><span>Independent studio · India & international enquiries · Scope-led delivery</span></div>
+      </div>
+      <div class="dashboard-wrap" aria-label="Illustrative concept dashboard preview">
+        <div class="dashboard">
+          <div class="dash-head"><div><div class="dash-title">From idea to interface.</div><div class="dash-sub">A sample of the thinking behind a digital product — concept artwork, not client data.</div></div><span class="dash-badge">Studio note 01</span></div>
+          <div class="metric-grid"><div class="metric"><label>01 / Discover</label><strong>Ask.</strong><small>Understand the real problem</small></div><div class="metric"><label>02 / Design</label><strong>Shape.</strong><small>Make the next step clear</small></div><div class="metric"><label>03 / Build</label><strong>Make.</strong><small>Develop to agreed scope</small></div><div class="metric"><label>04 / Refine</label><strong>Test.</strong><small>Check, improve, hand over</small></div></div>
+        </div>
+        <div class="floating-note"><strong>✓ Follow-up stays visible</strong><span>Keep the next action clear.</span></div>
+      </div>
+    </section>
+    <section class="trust-strip"><div class="container trust-inner"><div class="trust-label">What every good project should start with.</div><div class="trust-item"><span>01</span> Strategy before screens</div><div class="trust-item"><span>02</span> Design with purpose</div><div class="trust-item"><span>03</span> Quality checked</div><div class="trust-item"><span>04</span> Clear handover</div></div></section>
+
+
+
+    <section class="workflow section" id="how-it-works"><div class="container workflow-grid"><div class="section-head"><div class="kicker">A clear, collaborative process</div><h2>Good delivery starts with a shared brief.</h2><p>Projects are scoped around your goals, priorities and constraints. You’ll know what’s included, what’s not, and how progress will be reviewed.</p><button class="btn btn-dark" data-open-demo style="margin-top:23px">Start a project conversation ↗</button></div>
+      <div class="steps"><article class="step"><div class="step-num">01</div><div><h3>Discovery & requirements</h3><p>Discuss your audience, goals, must-have features, constraints and success criteria.</p></div></article><article class="step"><div class="step-num">02</div><div><h3>Scope, estimate & plan</h3><p>Agree deliverables, assumptions, timeline, milestones, price and feedback rounds before work starts.</p></div></article><article class="step"><div class="step-num">03</div><div><h3>Build & review</h3><p>Work through agreed milestones, share progress and resolve questions early.</p></div></article><article class="step"><div class="step-num">04</div><div><h3>QA & handover</h3><p>Test agreed functionality and responsive layouts, fix in-scope issues and document the handover.</p></div></article></div>
+    </div></section>
+<section class="container section" id="pricing">
+  <div class="section-head">
+    <div class="kicker">Selected Work · Concepts</div>
+    <h2>Digital experiences, designed with purpose.</h2>
+    <p>
+      Explore website, dashboard and landing-page concepts
+      created to solve real business needs.
+    </p>
+  </div>
+
+  <div class="mockup-grid">
+
+    <article class="mockup-card">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-address">business-website.com</div>
+        </div>
+        <img src="image1.jpg"
+             alt="Business website design concept">
+      </div>
+      <div class="mockup-info">
+        <div>
+          <h3>Business Website</h3>
+          <p>Premium digital presence</p>
+        </div>
+        <span>01</span>
+      </div>
+      <button class="btn btn-outline" data-plan="Business website concept" data-open-demo>Build something similar</button>
+    </article>
+
+    <article class="mockup-card">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-address">dashboard.example</div>
+        </div>
+        <img src="image2.jpg"
+             alt="Business dashboard design concept">
+      </div>
+      <div class="mockup-info">
+        <div>
+          <h3>Business Dashboard</h3>
+          <p>Data and workflow interfaces</p>
+        </div>
+        <span>02</span>
+      </div>
+      <button class="btn btn-primary" data-plan="Dashboard concept" data-open-demo>Discuss a dashboard</button>
+    </article>
+
+    <article class="mockup-card">
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="browser-address">launch.example</div>
+        </div>
+        <img src="image3.jpg"
+             alt="Product landing page design concept">
+      </div>
+      <div class="mockup-info">
+        <div>
+          <h3>Product Landing Page</h3>
+          <p>Conversion-focused design</p>
+        </div>
+        <span>03</span>
+      </div>
+      <button class="btn btn-outline" data-plan="Landing page concept" data-open-demo>Plan a landing page</button>
+    </article>
+
+  </div>
+</section>
+    <section class="container section" id="faq"><div class="faq-grid"><div class="section-head"><div class="kicker">A few useful details</div><h2>Before we begin.</h2><p>Every project starts with a conversation about fit, scope, timelines and the outcome you need. Reach out to explore whether we’re a good match.</p><button class="btn btn-primary" data-open-demo style="margin-top:22px">Discuss a project ↗</button></div><div class="faq-list">
+      <details><summary>What kinds of projects do you take on?</summary><p>Business websites, landing pages, dashboards, internal tools and suitable custom web solutions. Final fit depends on the requirements, timeline and available capacity.</p></details>
+      <details><summary>Do you work with international clients?</summary><p>Yes, the studio is open to project conversations with clients in India and internationally. Communication, time zones, payment terms and delivery arrangements are agreed before work begins.</p></details>
+      <details><summary>How do estimates and timelines work?</summary><p>After discovery, the estimate is based on agreed deliverables, complexity, dependencies, testing and feedback rounds. Any assumptions and exclusions are documented before kickoff.</p></details>
+      <details><summary>Can you work on an existing website or tool?</summary><p>Potentially, yes. We’ll first review the current setup, access requirements, code ownership and the specific improvements needed before confirming feasibility.</p></details>
+      <details><summary>Are the projects shown here client work?</summary><p>No. Items shown in the selected concepts section are clearly labelled illustrative concept work, not paid client projects or claims of production deployment.</p></details>
+    </div></div></section>
+    <section class="container" style="padding-bottom:75px"><div class="cta"><div><div class="kicker" style="color:var(--site-primary)">Have a project in mind?</div><h2>Let’s turn the brief into a clear plan.</h2><p>Share your goals, rough timeline and what you need to build. We’ll use that context to start a practical project conversation.</p></div><button class="btn btn-primary" data-open-demo>Start a conversation <span>↗</span></button></div></section>
+  </main>
+  <footer class="container footer"><div class="footer-inner"><a class="brand" href="#home"><span class="brand-mark">A.</span><span>Arpita Tech Studio<small>Websites · Software · Digital solutions</small></span></a><span>© <span id="year"></span> Arpita Tech Studio. Portfolio concept.</span><div class="footer-links"><a href="#features">Services</a><a href="#pricing">Concepts</a><a href="#faq">FAQs</a><a href="#home">Back to top ↑</a></div></div></footer>
+</div>
+<div class="modal-backdrop" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal"><div class="modal-top"><div><div class="kicker">Project enquiry</div><h2 id="modalTitle">Tell us what you’re building.</h2></div><button class="close-modal" id="closeModal" aria-label="Close">×</button></div><p class="modal-intro">Share a few details about your project. Email delivery is not connected in this preview yet, so this form will clearly tell you if it cannot send. You can also open WhatsApp with a pre-filled message.</p>
+    <form id="demoForm"><div class="form-grid"><div class="field"><label for="fullName">Your name *</label><input id="fullName" name="fullName" required placeholder="Alex Morgan"></div><div class="field"><label for="workEmail">Work email *</label><input id="workEmail" name="workEmail" type="email" required placeholder="alex@company.com"></div><div class="field"><label for="company">Business name</label><input id="company" name="company" placeholder="Your company"></div><div class="field"><label for="plan">Project type</label><select id="plan" name="plan"><option>Not sure yet</option><option>Business website concept</option><option>Landing page concept</option><option>Dashboard concept</option><option>Custom business tool</option><option>Website improvements</option></select></div><div class="field full"><label for="challenge">Project goals, scope or timeline</label><textarea id="challenge" name="challenge" placeholder="What do you want to build, who is it for, and when would you like to start?"></textarea></div></div><button class="btn btn-primary form-submit" type="submit">Send enquiry by email ↗</button><div class="form-message" id="formMessage" role="status"></div><div class="contact-actions"><a class="btn btn-whatsapp" id="whatsappContact" href="https://wa.me/918779837274?text=Hi%20Arpita%2C%20I%27d%20like%20to%20discuss%20a%20project%20with%20Arpita%20Tech%20Studio." target="_blank" rel="noopener noreferrer">Continue on WhatsApp ↗</a></div><p class="contact-note">Email recipient: arpitapatil4412@gmail.com. Email sending stays disabled until a secure form endpoint is configured and tested. This preview does not store enquiries.</p></form>
+  </div>
+</div>
+<script>
+(function () {
+  const nav = document.getElementById('mainNav');
+  const toggle = document.getElementById('menuToggle');
+  const modal = document.getElementById('demoModal');
+  const close = document.getElementById('closeModal');
+  const plan = document.getElementById('plan');
+  const message = document.getElementById('formMessage');
+  document.getElementById('year').textContent = new Date().getFullYear();
+  toggle.addEventListener('click', function () {
+    const isOpen = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  nav.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
+  });
+  function openModal(event) {
+    const button = event.currentTarget;
+    const chosenPlan = button.getAttribute('data-plan');
+    if (chosenPlan) plan.value = chosenPlan;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { document.getElementById('fullName').focus(); }, 30);
+  }
+  function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+  document.querySelectorAll('[data-open-demo]').forEach(function (button) { button.addEventListener('click', openModal); });
+  close.addEventListener('click', closeModal);
+  modal.addEventListener('click', function (event) { if (event.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeModal(); });
+  const form = document.getElementById('demoForm');
+  const whatsapp = document.getElementById('whatsappContact');
+  const EMAIL_ENDPOINT = '';
+  form.addEventListener('input', function () {
+    const data = Object.fromEntries(new FormData(form).entries());
+    const text = ['Hi Arpita, I would like to discuss a project with Arpita Tech Studio.', '', 'Name: ' + (data.fullName || ''), 'Email: ' + (data.workEmail || ''), 'Business: ' + (data.company || ''), 'Project: ' + (data.plan || 'Not sure yet'), 'Goals / timeline: ' + (data.challenge || '')].join('\n');
+    whatsapp.href = 'https://wa.me/918779837274?text=' + encodeURIComponent(text);
+  });
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    message.classList.add('show');
+    message.textContent = '';
+    if (!EMAIL_ENDPOINT) {
+      message.textContent = 'Email is not connected yet. Your enquiry has NOT been sent. To enable delivery to arpitapatil4412@gmail.com, configure a verified form-service endpoint or secure backend URL, then test it before publishing. You can use the WhatsApp button below meanwhile.';
+      return;
+    }
+    const submitButton = form.querySelector('[type="submit"]');
+    submitButton.disabled = true;
+    try {
+      const response = await fetch(EMAIL_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form).entries())) });
+      if (!response.ok) throw new Error('Submission failed');
+      message.textContent = 'Your enquiry was accepted by the configured form service.';
+      form.reset();
+      whatsapp.href = 'https://wa.me/918779837274?text=' + encodeURIComponent('Hi Arpita, I would like to discuss a project with Arpita Tech Studio.');
+    } catch (error) {
+      message.textContent = 'We could not confirm delivery. Your enquiry may not have been sent. Please use WhatsApp or try again later.';
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
